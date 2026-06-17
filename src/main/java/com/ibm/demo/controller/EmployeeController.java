@@ -2,19 +2,26 @@ package com.ibm.demo.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ibm.demo.model.Employee;
 import com.ibm.demo.services.EmployeeService;
 
+
 import jakarta.validation.Valid;
 
+
+@Validated
 @RestController
 @RequestMapping("/api/v1/employees")
 public class EmployeeController {
 
+	private final Logger LOG=org.slf4j.LoggerFactory.getLogger(this.getClass());
+	
 	private final EmployeeService employeeService;
 
 	public EmployeeController(EmployeeService employeeService) {
@@ -48,7 +55,9 @@ public class EmployeeController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Employee> updateEmployee(@PathVariable String id, @Valid @RequestBody Employee employee) {
-
+		//System.out.println("Hello");    not a good practice to use syso
+		LOG.info("Id"+id);                 // good practice to use Logger 
+		
 		return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
 	}
 
